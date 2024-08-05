@@ -1,25 +1,20 @@
-let ws = new WebSocket('wss://superbien.github.io/superlab-prompt-server//:443');
+let ws = new WebSocket('wss://superlab-websocket-server.onrender.com//:443');
 
 let promptField = document.querySelector('.prompt') ;
-let sendButton = document.querySelector('.send') ;
 
-sendButton.addEventListener('onclick', (event) => {
+document.getElementById("send").addEventListener("click", sendPrompt);
+
+function sendPrompt() {
+	console.log("button pressed");
   ws.send(JSON.stringify({ 'prompt': promptField.value }));
-}, false);
+  promptField.value = "";
+}
 
 ws.addEventListener('open', (event) => {
-  console.log('Socket connection open');
-  // alert('Successfully connected to socket server 🎉');
-  ws.send('pong');
 });
 
 ws.addEventListener('message', (message) => {
   if (message && message.data) {
-    if (message.data === "ping") {
-      console.log("got ping");
-      ws.send("pong");
-      return;
-    }
     let data = JSON.parse(message.data);
     if (data) {
   
