@@ -1,47 +1,119 @@
-<!DOCTYPE HTML>
-<!--
-	Stellar by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>SUPERLAB PROMPTS</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperAI</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-				<!-- Header -->
-					<header id="header" class="alt">
-						<p>What would you like to see?</p>
-						<label for="prompt">Prompt:</label>
-						<input type="text" id="prompt" name="prompt" class="prompt"><br>
-						 <button type="button" id="send" name="send" class="send">Send</button> 
-					</header>
+        label {
+            margin-bottom: 10px;
+        }
 
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid white;
+            border-radius: 8px;
+            background-color: black;
+            color: white;
+            margin-bottom: 20px;
+        }
 
-				<!-- Main -->
-					<div id="main">
-						
-					</div>
+		button {
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: white;
+			color: black;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			box-shadow: 0 9px #999;
+		}
 
-			</div>
+		button:hover {
+			background-color: lightgoldenrodyellow;
+		}
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<script src="assets/js/websocket.js"></script>
+		button:active {
+			background-color: lightgoldenrodyellow;
+			box-shadow: 0 5px #666;
+			transform: translateY(4px);
+		}
 
-	</body>
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <img src="assets/superbien_noir_logo.gif" alt="Logo" width="300" height="300">
+
+    <form id="myForm" onsubmit="event.preventDefault(); submitForm();">
+        <label for="userInput">Type something for SuperAI?</label>
+        <input type="text" id="userInput" name="userInput" placeholder="Type here in english..." onkeyup="checkEnter()">
+        <button type="button" onclick="submitForm()">Send to SuperAI</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            // Get the form data
+            var userInputValue = document.getElementById('userInput').value;
+
+            if (userInputValue == '') return;
+
+            // Specify the target URL with the desired endpoint
+            var targetUrl = 'https://superbien.app.n8n.cloud/webhook/submit_string';
+
+            // Create a new FormData object and append the form data
+            var formData = new FormData();
+            formData.append('string', userInputValue);
+
+            // Create a new XMLHttpRequest object
+            var xhr = new XMLHttpRequest();
+
+            // Configure it as a POST request to the target URL
+            xhr.open('POST', targetUrl, true);
+
+            // Set up a callback function to handle the response
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // Request was successful, handle the response here
+                    console.log('POST request successful');
+                    console.log(xhr.responseText);
+                } else {
+                    // Request failed, handle the error here
+                    console.error('POST request failed');
+                }
+            };
+
+            // Send the FormData as the request body
+            xhr.send(formData);
+			document.getElementById('userInput').value = "";
+        }
+
+        function checkEnter(event) {
+            // Check if the "Enter" key is pressed (keyCode 13)
+            if (event.keyCode === 13) {
+                submitForm();
+            }
+        }
+    </script>
+
+</body>
 </html>
